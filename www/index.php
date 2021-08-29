@@ -21,7 +21,7 @@ th, td {
 <p>Showing contents of papers table:</p>
 
 <table border="1">
-<tr><th>Paper code</th><th>Paper name</th></tr>
+<tr><th>First Name</th><th>Last Name</th></tr>
 
 <?php
  
