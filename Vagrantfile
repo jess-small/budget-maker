@@ -24,21 +24,13 @@ Vagrant.configure("2") do |config|
 
   
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine and only allow access
-  # via 127.0.0.1 to disable public access
+ 
    webserver.vm.network "forwarded_port", guest: 80, host: 8081, host_ip: "127.0.0.1"
 
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
+  
    webserver.vm.network "private_network", ip: "192.168.2.11"
 
- 
 
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
    webserver.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
 
   # Provider-specific configuration so you can fine-tune various
@@ -121,7 +113,7 @@ config.vm.define "dbserver" do |dbserver|
       # which is part of the repository containing this Vagrantfile, so you
       # can look at the file on your host. The mysql command specifies both
       # the user to connect as (webuser) and the database to use (fvision).
-      cat /vagrant/setup-database.sql | mysql -u webuser fvision
+      cat /vagrant/db.sql | mysql -u webuser fvision
 
       # By default, MySQL only listens for local network requests,
       # i.e., that originate from within the dbserver VM. We need to
