@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html ng-app="ShoppingApp">
+    <head>
+        <title>View Products</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Mulish&display=swap" rel="stylesheet">
+        <script src="js/angular.js"></script>
+        <script src="js/angular-resource.js"></script>
+        <script src="js/ngStorage.js"></script>
+        <script src="js/shopping.js"></script>
+    </head>
+    <body ng-controller="ProductController as prodCtrl">
+        <div ng-include="'menu.html'" ></div>
+        <div class = "header">
+            <h1>Products</h1>
+        </div>
+        <div>
+            <button type="submit" ng-click="prodCtrl.selectAll()">All</button>
+            <button type="submit" ng-repeat="cat in prodCtrl.categories" ng-click="prodCtrl.selectCategory(cat)">{{cat}}</button>
+            
+        </div>
+
+        <div>
+
+            <table ng-controller="ShoppingCartController as shopCtrl" class = "products">
+
+                <thead>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Available</th>
+                </thead>
+                <tbody>
+
+                    <tr data-ng-repeat="product in prodCtrl.products">
+
+                        <td>{{product.name}}</td>
+                        <td>{{product.description}}</td>
+                        <td>${{product.listPrice}}</td>
+                        <td>{{product.quantityInStock}}</td>
+                        <td><button type="button" ng-click="shopCtrl.buy(product)">Buy</button></td>
+                <img ng-src="/images/product/{{product.productID}}"><br>
+                <tr/>
+
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </body>
+</html>
