@@ -32,3 +32,7 @@ CREATE TABLE budget_item
    foreign key(b_id)
    	references budget(budget_id)
 );
+
+
+INSERT INTO user VALUES ('Jess', 'Small', 1, 'password');
+
