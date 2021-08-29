@@ -1,3 +1,9 @@
 git pull origin main
 
 notepad filename
+
+git add name
+
+git commit -m "message"
+
+git push origin master
