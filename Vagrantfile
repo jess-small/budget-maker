@@ -33,20 +33,6 @@ Vagrant.configure("2") do |config|
 
    webserver.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
 
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
-  #
-  # config.vm.provider "virtualbox" do |vb|
-  #   # Display the VirtualBox GUI when booting the machine
-  #   vb.gui = true
-  #
-  #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
-  # end
-  #
-  # View the documentation for the provider you are using for more
-  # information on available options.
 
   # Enable provisioning with a shell script. Additional provisioners such as
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
@@ -113,7 +99,7 @@ config.vm.define "dbserver" do |dbserver|
       # which is part of the repository containing this Vagrantfile, so you
       # can look at the file on your host. The mysql command specifies both
       # the user to connect as (webuser) and the database to use (fvision).
-      cat /vagrant/db.sql | mysql -u webuser fvision
+      cat /vagrant/dbserver/db.sql | mysql -u webuser fvision
 
       # By default, MySQL only listens for local network requests,
       # i.e., that originate from within the dbserver VM. We need to
