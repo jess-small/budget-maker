@@ -8,7 +8,7 @@ table, th, td {
   border: 2px solid grey;
   border-collapse: collapse;
 }
-<!--test-->
+
 th, td {
   padding: 0.2em;
 }
