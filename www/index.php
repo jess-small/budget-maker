@@ -18,7 +18,7 @@ th, td {
 <body>
 <h1>Database test page</h1>
 
-<p>Showing contents of papers table:</p>
+<p>Showing contents of papers table: ?</p>
 
 <table border="1">
 <tr><th>First Name</th><th>Last Name</th></tr>
