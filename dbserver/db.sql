@@ -1,10 +1,9 @@
 
 CREATE TABLE user
 (
-   fname        VARCHAR(15) NOT NULL,
-   lname        VARCHAR(15) NOT NULL,
-   uid          INT(9)       PRIMARY KEY,
-   password     VARCHAR(20) NOT NULL
+   username	VARCHAR(15) NOT NULL,
+   uid          INT(9)      NOT NULL PRIMARY KEY AUTO_INCREMENT,
+   password     VARCHAR(255) NOT NULL
 
 );
 
@@ -34,5 +33,5 @@ CREATE TABLE budget_item
 );
 
 
-INSERT INTO user VALUES ('Jess', 'Small', 1, 'password');
+INSERT INTO user VALUES ('jsmall', 1, 'password');
 
