@@ -1,4 +1,5 @@
 <?php
+session_start();
 $db_host   = '192.168.2.12';
 $db_name   = 'fvision';
 $db_user   = 'webuser';
@@ -7,48 +8,43 @@ $db_passwd = 'insecure_db_pw';
 $pdo_dsn = "mysql:host=$db_host;dbname=$db_name";
 
 $pdo = new PDO($pdo_dsn, $db_user, $db_passwd);
-
-?> 
-<?php
+ 
 // Define variables and initialize with empty values
-$uid = $password = $confirm_password = "";
-$uid_err = $password_err = $confirm_password_err = "";
+$username = $password = $confirm_password = "";
+$username_err = $password_err = $confirm_password_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
  
     // Validate username
-    if(empty(trim($_POST["uid"]))){
-        $uid_err = "Please enter a username.";
-    } elseif(!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["uid"]))){
-        $uid_err = "Username can only contain letters, numbers, and underscores.";
+    if(empty(trim($_POST["username"]))){
+        $username_err = "Please enter a username.";
+    } elseif(!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["username"]))){
+        $username_err = "Username can only contain letters, numbers, and underscores.";
     } else{
         // Prepare a select statement
-       // $sql = "SELECT uid FROM user WHERE uid = ?";
-        $q = $pdo->query("SELECT uid FROM user WHERE uid = ?");
-        if($stmt = mysqli_prepare($link, $sql)){
+        $sql = "SELECT uid FROM user WHERE username = :username";
+        
+        if($stmt = $pdo->prepare($sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_uid);
+            $stmt->bindParam(":username", $param_username, PDO::PARAM_STR);
             
             // Set parameters
-            $param_uid = trim($_POST["uid"]);
+            $param_username = trim($_POST["username"]);
             
             // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                /* store result */
-                mysqli_stmt_store_result($stmt);
-                
-                if(mysqli_stmt_num_rows($stmt) == 1){
-                    $uid_err = "This username is already taken.";
+            if($stmt->execute()){
+                if($stmt->rowCount() == 1){
+                    $username_err = "This username is already taken.";
                 } else{
-                    $uid = trim($_POST["uid"]);
+                    $username = trim($_POST["username"]);
                 }
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "1 Oops! Something went wrong. Please try again later.";
             }
 
             // Close statement
-            mysqli_stmt_close($stmt);
+            unset($stmt);
         }
     }
     
@@ -72,34 +68,36 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     // Check input errors before inserting in database
-    if(empty($uid_err) && empty($password_err) && empty($confirm_password_err)){
+    if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO user (uid, password) VALUES (?, ?)";
+        $sql = "INSERT INTO user (username, password) VALUES (:username, :password)";
          
-        if($stmt = mysqli_prepare($link, $sql)){
+        if($stmt = $pdo->prepare($sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ss", $param_uid, $param_password);
+            $stmt->bindParam(":username", $param_username, PDO::PARAM_STR);
+            $stmt->bindParam(":password", $param_password, PDO::PARAM_STR);
             
             // Set parameters
-            $param_uid = $uid;
-            $param_password = $password;
-            
+            $param_username = $username;
+            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+            //$param_password = $password;
             // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
+            if($stmt->execute()){
                 // Redirect to login page
                 header("location: login.php");
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "2 Oops! Something went wrong. Please try again later.";
+		 echo $stmt->error;
             }
 
             // Close statement
-            mysqli_stmt_close($stmt);
+            unset($stmt);
         }
     }
     
     // Close connection
-    mysqli_close($link);
+    unset($pdo);
 }
 ?>
  
@@ -121,8 +119,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group">
                 <label>Username</label>
-                <input type="text" name="uid" class="form-control <?php echo (!empty($uid_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $uid; ?>">
-                <span class="invalid-feedback"><?php echo $uid_err; ?></span>
+                <input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+                <span class="invalid-feedback"><?php echo $username_err; ?></span>
             </div>    
             <div class="form-group">
                 <label>Password</label>
