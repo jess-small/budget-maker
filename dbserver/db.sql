@@ -9,10 +9,11 @@ CREATE TABLE user
 
 CREATE TABLE budget
 (
-   budget_id    INT(9)          PRIMARY KEY,
-   user_id	INT(9)          NOT NULL,
-   budget_type  VARCHAR(15),
-   income	INT(6)          NOT NULL,
+   budget_id    INT(9)          NOT NULL PRIMARY KEY AUTO_INCREMENT,
+   user_id	INT(9),		NOT NULL,
+   budget_name  VARCHAR(30)	NOT NULL,
+   budget_type  VARCHAR(15)
+   starting_value INT(6)          NOT NULL,
    remaining    INT(6),
    constraint fk_budget_uid
    foreign key (user_id)
