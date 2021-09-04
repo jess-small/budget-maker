@@ -1,6 +1,6 @@
 <?php
 session_start();
-// Check if the user is logged in, if not then redirect him to login page
+// Checks if user is logged in
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
@@ -25,34 +25,35 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate budget name
     if(empty(trim($_POST["budget_name"]))){
         $name_err = "Please enter a budget name.";
-    } elseif(!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["budget_name"]))){
+    } elseif(!preg_match('/^[a-zA-Z0-9_ ]+$/', trim($_POST["budget_name"]))){
         $name_err = "Budget name can only contain letters, numbers, and underscores.";
     } else{
+        $budget_name = trim($_POST["budget_name"]);
         // Prepare a select statement
-        $sql = "SELECT budget_id FROM budget WHERE budget_name = :budget_name";
+       // $sql = "SELECT budget_id FROM budget WHERE budget_name = :budget_name";
 
-        if($stmt = $pdo->prepare($sql)){
+        //if($stmt = $pdo->prepare($sql)){
             // Bind variables to the prepared statement as parameters
-            $stmt->bindParam(":budget_name", $param_budget_name, PDO::PARAM_STR);
+         //   $stmt->bindParam(":budget_name", $param_budget_name, PDO::PARAM_STR);
 
             // Set parameters
-            $param_budget_name = trim($_POST["budget_name"]);
+          //  $param_budget_name = trim($_POST["budget_name"]);
 
             // Attempt to execute the prepared statement
-            if($stmt->execute()){
-                if($stmt->rowCount() == 1){
-                    $name_err = "This budget name already exists. Please choose another.";
-                } else{
+           // if($stmt->execute()){
+           //     if($stmt->rowCount() == 1){
+           //         $name_err = "This budget name already exists. Please choose another.";
+           //     } else{
                     $budget_name = trim($_POST["budget_name"]);
-                }
-            } else{
-                echo "1 Oops! Something went wrong. Please try again later.";
-            }
+               // }
+           // } else{
+           //     echo "Oops! Something went wrong. Please try again later.";
+          //  }
 
             // Close statement
             unset($stmt);
         }
-    }
+    //}
 
      // Validate budget type
     if(empty(trim($_POST["budget_type"]))){
@@ -64,8 +65,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate starting value
      if(empty(trim($_POST["starting_value"]))){
         $starting_value_err = "Please enter a starting value.";
-    // } elseif(!preg_match('/^[0-9 +-]*$/'), trim($_POST["budget_name"]))){
-      //  $starting_value_err = "Enter a valid starting value";
+
+     } elseif(!preg_match('/^([0-9]*)$/', trim($_POST["starting_value"]))){
+        $starting_value_err = "Enter a valid starting value";
     } else{
         $starting_value = trim($_POST["starting_value"]);
     }
@@ -80,19 +82,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         if($stmt = $pdo->prepare($sql)){
             // Bind variables to the prepared statement as parameters
-            $stmt->bindParam(":budget_name", $param_budget_name, PDO::PARAM_STR);
-            $stmt->bindParam(":budget_type", $param_budget_type, PDO::PARAM_STR);
-	    $stmt->bindParam(":starting_value", $param_starting_value, PDO::PARAM_INT);
-	    $stmt->bindParam(":user_id", $param_user_id, PDO::PARAM_INT);
+            $stmt->bindParam(":budget_name", $budget_name, PDO::PARAM_STR);
+            $stmt->bindParam(":budget_type", $budget_type, PDO::PARAM_STR);
+	        $stmt->bindParam(":starting_value", $starting_value, PDO::PARAM_INT);
+	        $stmt->bindParam(":user_id", $param_user_id, PDO::PARAM_INT);
             // Set parameters
             $param_budget_name = $budget_name;
             $param_budget_type = $budget_type;
-	    $param_starting_value = $starting_value;
-	    $param_user_id = $user_id;
+	        $param_starting_value = $starting_value;
+	        $param_user_id = $user_id;
             
             // Attempt to execute the prepared statement
             if($stmt->execute()){
-                // Redirect to login page
+                // Redirect to budget home page
                 header("location: budget.php");
             } else{
                 echo "2 Oops! Something went wrong. Please try again later.";
