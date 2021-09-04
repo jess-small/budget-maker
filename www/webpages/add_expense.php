@@ -14,24 +14,67 @@ $expense_name = $description = $updated_value = $amount = "";
 $expense_name_err = $description_err = $amount_err = "";
 
 
-//$budget_id = $_GET['budget_id'];
+//$b_id = $_GET['budget_id'];
 //$_SESSION['b_id'] = $budget_id;
+//$_SESSION["b_id"] = $_GET["budget_id"];
 
-echo $budget_id;
+//echo $_SESSION["b_id"];
 
 
+//$b_id = (int)$_SESSION["b_id"];
+
+if (isset($_GET["budget_id"])) {
+    $_SESSION["b_id"] = $_GET["budget_id"];
+}
+$b_id = $_SESSION["b_id"];
 //if(isset($_POST['submit'])) {
-  if($_SERVER["REQUEST_METHOD"] == "POST"){  
+if($_SERVER["REQUEST_METHOD"] == "POST"){  
+	
+   
 
-    $budget_id= $_SESSION['b_id'];  
+    //$budget_id= $_SESSION['budget_id'];  
+
+
+    //$sql = "UPDATE budget SET starting_value=:amount WHERE budget_id=:budget_id";
+   
     $expense_name = $_POST['expense_name'];
     $description = $_POST['description'];
     $amount = $_POST['amount'];
-    $sql = "UPDATE budget SET starting_value=:amount WHERE budget_id=:budget_id";
+    
+    
+    
+    $sql = "INSERT INTO expense (expense_name, description, amount, b_id) VALUES (:expense_name, :description, :amount, :b_id)";
     $stmt = $pdo->prepare($sql);
-
+   
+    $stmt->bindParam(":expense_name", $expense_name, PDO::PARAM_STR);
+    $stmt->bindParam(":description", $description, PDO::PARAM_STR);
     $stmt->bindParam(":amount", $amount, PDO::PARAM_INT);
-    $stmt->bindParam(":budget_id", $budget_id, PDO::PARAM_INT);
+    $stmt->bindParam(":b_id", $b_id, PDO::PARAM_INT);
+   
+
+    if($stmt->execute()){
+ 	header("location: budget.php");
+	}else{
+	echo 'error';
+	
+	}
+
+    $sql1 = "SELECT starting_value FROM budget WHERE budget_id = :b_id";
+    $stmt = $pdo->prepare($sql1);
+    $stmt->bindParam(':b_id', $b_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $budgets = $stmt->fetch();
+	
+	$original_value = $budgets['starting_value'];
+	echo $original_value;
+    $new_value = $budgets['starting_value'] - $amount;
+
+
+    $sql2 = "UPDATE budget SET starting_value=:new_value WHERE budget_id=:b_id";
+    $stmt = $pdo->prepare($sql2);
+
+    $stmt->bindParam(":new_value", $new_value, PDO::PARAM_INT);
+    $stmt->bindParam(":b_id", $b_id, PDO::PARAM_INT);
     if($stmt->execute()){
  	header("location: budget.php");
 	}else{
