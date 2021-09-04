@@ -10,9 +10,9 @@ CREATE TABLE user
 CREATE TABLE budget
 (
    budget_id    INT(9)          NOT NULL PRIMARY KEY AUTO_INCREMENT,
-   user_id	INT(9),		NOT NULL,
+   user_id	INT(9)		NOT NULL,
    budget_name  VARCHAR(30)	NOT NULL,
-   budget_type  VARCHAR(15)
+   budget_type  VARCHAR(15),
    starting_value INT(6)          NOT NULL,
    remaining    INT(6),
    constraint fk_budget_uid
@@ -22,17 +22,18 @@ CREATE TABLE budget
    
 );
 
-CREATE TABLE budget_item
+CREATE TABLE expense
 (
-   item_id	INT(9)          PRIMARY KEY,
-   category     VARCHAR(20),    
+   expense_id	INT(9)          NOT NULL PRIMARY KEY AUTO_INCREMENT,
+   expense_name VARCHAR(20)     NOT NULL,
+   description  VARCHAR(20),   
    amount	INT             NOT NULL,           
    b_id         INT(9)          NOT NULL,
-   constraint fk_budget_item_budget_id
+   
+   constraint fk_expense_budget_id
    foreign key(b_id)
    	references budget(budget_id)
 );
 
 
-INSERT INTO user VALUES ('jsmall', 1, 'password');
 
