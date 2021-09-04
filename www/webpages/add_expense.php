@@ -13,35 +13,29 @@ $pdo = new PDO($pdo_dsn, $db_user, $db_passwd);
 $expense_name = $description = $updated_value = $amount = "";
 $expense_name_err = $description_err = $amount_err = "";
 
-
-//$b_id = $_GET['budget_id'];
-//$_SESSION['b_id'] = $budget_id;
-//$_SESSION["b_id"] = $_GET["budget_id"];
-
-//echo $_SESSION["b_id"];
-
-
-//$b_id = (int)$_SESSION["b_id"];
-
+//gets budget_id from url and sets in session storage
 if (isset($_GET["budget_id"])) {
     $_SESSION["b_id"] = $_GET["budget_id"];
 }
 $b_id = $_SESSION["b_id"];
-//if(isset($_POST['submit'])) {
+
+// Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){  
 	
+    //checks if expense field has input
     if(empty(trim($_POST["expense_name"]))){
         $expense_name_err = "Please enter an expense name.";
     } else{
         $expense_name = trim($_POST["expense_name"]);
     }
-
+    //checks if description field has input
     if(empty(trim($_POST["description"]))){
         $description_err = "Please enter a description.";
     } else{
         $description = trim($_POST["description"]);
     }
 
+    //checks if amount field has input and is of correct type
     if(empty(trim($_POST["amount"]))){
         $amount_err = "Please enter an amount.";
 
@@ -54,11 +48,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
    
 
     
-    
+    //checks if there are not errors in form, if not statements will execute
     if(empty($expense_name_err) && empty($description_err) && empty($amount_err)){
+
+        //statement to insert the expense from the from into the expense table
         $sql = "INSERT INTO expense (expense_name, description, amount, b_id) VALUES (:expense_name, :description, :amount, :b_id)";
         $stmt = $pdo->prepare($sql);
-   
         $stmt->bindParam(":expense_name", $expense_name, PDO::PARAM_STR);
         $stmt->bindParam(":description", $description, PDO::PARAM_STR);
         $stmt->bindParam(":amount", $amount, PDO::PARAM_INT);
@@ -72,16 +67,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	
 	    }
 
+        //statement to select the original value of the budget from the budget table
         $sql1 = "SELECT starting_value FROM budget WHERE budget_id = :b_id";
         $stmt = $pdo->prepare($sql1);
         $stmt->bindParam(':b_id', $b_id, PDO::PARAM_INT);
         $stmt->execute();
         $budgets = $stmt->fetch();
 	
+        //gets original value of budget
 	    $original_value = $budgets['starting_value'];
+
+        //sets new value of budget to the origin value minus the amount of the expense
         $new_value = $budgets['starting_value'] - $amount;
 
 
+        //statement to update the original value of the budget to the updated value
         $sql2 = "UPDATE budget SET starting_value=:new_value WHERE budget_id=:b_id";
         $stmt = $pdo->prepare($sql2);
 
