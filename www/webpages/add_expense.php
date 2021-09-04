@@ -30,57 +30,71 @@ $b_id = $_SESSION["b_id"];
 //if(isset($_POST['submit'])) {
 if($_SERVER["REQUEST_METHOD"] == "POST"){  
 	
+    if(empty(trim($_POST["expense_name"]))){
+        $expense_name_err = "Please enter an expense name.";
+    } else{
+        $expense_name = trim($_POST["expense_name"]);
+    }
+
+    if(empty(trim($_POST["description"]))){
+        $description_err = "Please enter a description.";
+    } else{
+        $description = trim($_POST["description"]);
+    }
+
+    if(empty(trim($_POST["amount"]))){
+        $amount_err = "Please enter an amount.";
+
+     } elseif(!preg_match('/^([0-9]*)$/', trim($_POST["amount"]))){
+        $amount_err = "Enter a valid amount";
+    } else{
+        $amount = trim($_POST["amount"]);
+    }
+
    
 
-    //$budget_id= $_SESSION['budget_id'];  
-
-
-    //$sql = "UPDATE budget SET starting_value=:amount WHERE budget_id=:budget_id";
-   
-    $expense_name = $_POST['expense_name'];
-    $description = $_POST['description'];
-    $amount = $_POST['amount'];
     
     
-    
-    $sql = "INSERT INTO expense (expense_name, description, amount, b_id) VALUES (:expense_name, :description, :amount, :b_id)";
-    $stmt = $pdo->prepare($sql);
+    if(empty($expense_name_err) && empty($description_err) && empty($amount_err)){
+        $sql = "INSERT INTO expense (expense_name, description, amount, b_id) VALUES (:expense_name, :description, :amount, :b_id)";
+        $stmt = $pdo->prepare($sql);
    
-    $stmt->bindParam(":expense_name", $expense_name, PDO::PARAM_STR);
-    $stmt->bindParam(":description", $description, PDO::PARAM_STR);
-    $stmt->bindParam(":amount", $amount, PDO::PARAM_INT);
-    $stmt->bindParam(":b_id", $b_id, PDO::PARAM_INT);
+        $stmt->bindParam(":expense_name", $expense_name, PDO::PARAM_STR);
+        $stmt->bindParam(":description", $description, PDO::PARAM_STR);
+        $stmt->bindParam(":amount", $amount, PDO::PARAM_INT);
+        $stmt->bindParam(":b_id", $b_id, PDO::PARAM_INT);
    
 
-    if($stmt->execute()){
- 	header("location: budget.php");
-	}else{
-	echo 'error';
+        if($stmt->execute()){
+ 	        header("location: budget.php");
+	    }else{
+	        echo 'error';
+	
+	    }
+
+        $sql1 = "SELECT starting_value FROM budget WHERE budget_id = :b_id";
+        $stmt = $pdo->prepare($sql1);
+        $stmt->bindParam(':b_id', $b_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $budgets = $stmt->fetch();
+	
+	    $original_value = $budgets['starting_value'];
+        $new_value = $budgets['starting_value'] - $amount;
+
+
+        $sql2 = "UPDATE budget SET starting_value=:new_value WHERE budget_id=:b_id";
+        $stmt = $pdo->prepare($sql2);
+
+        $stmt->bindParam(":new_value", $new_value, PDO::PARAM_INT);
+        $stmt->bindParam(":b_id", $b_id, PDO::PARAM_INT);
+        if($stmt->execute()){
+ 	        header("location: budget.php");
+	    }else{
+	        echo 'error';
 	
 	}
-
-    $sql1 = "SELECT starting_value FROM budget WHERE budget_id = :b_id";
-    $stmt = $pdo->prepare($sql1);
-    $stmt->bindParam(':b_id', $b_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $budgets = $stmt->fetch();
-	
-	$original_value = $budgets['starting_value'];
-	echo $original_value;
-    $new_value = $budgets['starting_value'] - $amount;
-
-
-    $sql2 = "UPDATE budget SET starting_value=:new_value WHERE budget_id=:b_id";
-    $stmt = $pdo->prepare($sql2);
-
-    $stmt->bindParam(":new_value", $new_value, PDO::PARAM_INT);
-    $stmt->bindParam(":b_id", $b_id, PDO::PARAM_INT);
-    if($stmt->execute()){
- 	header("location: budget.php");
-	}else{
-	echo 'error';
-	
-	}
+    }
+    unset($pdo);
 }
 
 
@@ -105,18 +119,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="input">
             <div class="form-group">
                 <label>Expense Name</label>
-                <input type="text" name="expense_name" class="form-control" value="<?php echo $expense_name; ?>">
-		<span class="invalid-feedback"><?php echo $expense_name_err; ?></span>
+                <input type="text" name="expense_name" class="form-control <?php echo (!empty($expense_name_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $expense_name; ?>">
+		        <span class="invalid-feedback"><?php echo $expense_name_err; ?></span>
             </div>
 	    <div class = "form-group">
             <label>Expense Description</label>
-                <input type="text" name="description" class="form-control" value="<?php echo $description; ?>">
-		<span class="invalid-feedback"><?php echo $description_err; ?></span>
+                <input type="text" name="description" class="form-control <?php echo (!empty($description_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $description; ?>">
+		        <span class="invalid-feedback"><?php echo $description_err; ?></span>
 	    </div>
 	    <div class="form-group">
                 <label>Expense Amount</label>
-                <input type="text" name="amount" class="form-control" value="<?php echo $amount; ?>">
-		<span class="invalid-feedback"><?php echo $amount_err; ?></span>
+                <input type="text" name="amount" class="form-control <?php echo (!empty($amount_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $amount; ?>">
+		       <span class="invalid-feedback"><?php echo $amount_err; ?></span>
             </div>           
           
            <input type="submit" name="submit" class="btn btn-primary" value="Update">
