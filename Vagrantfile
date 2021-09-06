@@ -117,7 +117,7 @@ config.vm.define "dbserver" do |dbserver|
   config.vm.define "administrative" do |administrative|
    administrative.vm.hostname = "administrative"
 
-   administrative.vm.network "forwarded_port", guest: 81, host: 8081, host_ip: "127.0.0.1"
+   administrative.vm.network "forwarded_port", guest: 80, host: 8081, host_ip: "127.0.0.1"
  
    administrative.vm.network "private_network", ip: "192.168.2.13"
 
