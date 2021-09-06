@@ -21,15 +21,10 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "webserver" do |webserver|
    webserver.vm.hostname = "webserver"
-
-  
-
  
    webserver.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
 
-  
    webserver.vm.network "private_network", ip: "192.168.2.11"
-
 
    webserver.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
 
@@ -52,6 +47,7 @@ Vagrant.configure("2") do |config|
 
    SHELL
 end
+
 config.vm.define "dbserver" do |dbserver|
     dbserver.vm.hostname = "dbserver"
     # Note that the IP address is different from that of the webserver
@@ -117,6 +113,35 @@ config.vm.define "dbserver" do |dbserver|
       service mysql restart
     SHELL
   end
+
+  config.vm.define "administrative" do |administrative|
+   administrative.vm.hostname = "administrative"
+
+   administrative.vm.network "forwarded_port", guest: 81, host: 8081, host_ip: "127.0.0.1"
+ 
+   administrative.vm.network "private_network", ip: "192.168.2.13"
+
+   administrative.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
+
+
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+   administrative.vm.provision "shell", inline: <<-SHELL
+     apt-get update
+     apt-get install -y apache2 php libapache2-mod-php php-mysql
+     # Change VM's administrative's configuration to use shared folder.
+      # (Look inside test-website.conf for specifics.)
+      cp /vagrant/test-website.conf /etc/apache2/sites-available/
+      # activate our website configuration ...
+      a2ensite test-website
+      # ... and disable the default website provided with Apache
+      a2dissite 000-default
+      # Reload the administrative configuration, to pick up our changes
+      service apache2 reload
+
+   SHELL
+end
 
 end
 

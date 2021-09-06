@@ -33,20 +33,11 @@ $b_id = $_SESSION["b_id"];
 // echo "You have no expenses";
 // }
 
-// $dataPoints = array( 
-// 	array("label"=>"retirement", "y"=>500),
-// 	array("label"=>"short term", "y"=>200),
-// 	array("label"=>"long term", "y"=>300),
-// )
-
-$dataArray = array();
-
-$qry = mysql_query("SELECT expense_name, amount FROM expense");
-
-while($row = mysql_fetch_array($qry)) {
-    $dataArray[$row['expense_name']] = $res['amount'];
-}
-
+$dataPoints = array( 
+	array("label"=>"retirement", "y"=>500),
+	array("label"=>"short term", "y"=>200),
+	array("label"=>"long term", "y"=>300),
+)
 
 ?>
  
