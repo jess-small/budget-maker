@@ -78,21 +78,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	    $original_value = $budgets['starting_value'];
 
         //sets new value of budget to the origin value minus the amount of the expense
-        $new_value = $budgets['starting_value'] - $amount;
+        if(($budgets['starting_value'] - $amount) > 0){
+            $new_value = $budgets['starting_value'] - $amount;
+        }else{
+            $new_value = 0;
+        }
+            
 
+   
+            //statement to update the original value of the budget to the updated value
+            $sql2 = "UPDATE budget SET starting_value=:new_value WHERE budget_id=:b_id";
+            $stmt = $pdo->prepare($sql2);
 
-        //statement to update the original value of the budget to the updated value
-        $sql2 = "UPDATE budget SET starting_value=:new_value WHERE budget_id=:b_id";
-        $stmt = $pdo->prepare($sql2);
-
-        $stmt->bindParam(":new_value", $new_value, PDO::PARAM_INT);
-        $stmt->bindParam(":b_id", $b_id, PDO::PARAM_INT);
-        if($stmt->execute()){
- 	        header("location: budget.php");
-	    }else{
-	        echo 'error';
+            $stmt->bindParam(":new_value", $new_value, PDO::PARAM_INT);
+            $stmt->bindParam(":b_id", $b_id, PDO::PARAM_INT);
+            if($stmt->execute()){
+                header("location: budget.php");
+            }else{
+                echo 'error';
 	
-	}
+	        }   
+       
     }
     unset($pdo);
 }
