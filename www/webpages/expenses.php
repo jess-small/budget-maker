@@ -1,4 +1,3 @@
-
 <?php
 // Source code for the pie chart format: https://canvasjs.com/php-charts/pie-chart/
 // Initialize the session
@@ -33,19 +32,19 @@ $b_id = $_SESSION["b_id"];
 // echo "You have no expenses";
 // }
 
-// $dataPoints = array( 
-// 	array("label"=>"retirement", "y"=>500),
-// 	array("label"=>"short term", "y"=>200),
-// 	array("label"=>"long term", "y"=>300),
-// )
+$dataPoints = array( 
+	array("label"=>"retirement", "y"=>500),
+	array("label"=>"short term", "y"=>200),
+	array("label"=>"long term", "y"=>300),
+)
 
-$dataArray = array();
+// $dataArray = array();
 
-$qry = mysql_query("SELECT expense_name, amount FROM expense");
+// $qry = mysql_query("SELECT expense_name, amount FROM expense");
 
-while($row = mysql_fetch_array($qry)) {
-    $dataArray[$row['expense_name']] = $res['amount'];
-}
+// while($row = mysql_fetch_array($qry)) {
+//     $dataArray[$row['expense_name']] = $res['amount'];
+// }
 
 
 ?>
@@ -131,4 +130,3 @@ chart.render();
     <p><a href="budget.php" class="btn btn-warning">Back</a><a href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a></p>
   </body>
 </html>
-
