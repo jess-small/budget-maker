@@ -73,12 +73,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             header("location: budget.php");
                         } else{
                             // Password is not valid, display a generic error message
-                            $login_err = "1 Invalid username or password.";
+                            $login_err = "Invalid username or password.";
                         }
                     }
                 } else{
                     // Username doesn't exist, display a generic error message
-                    $login_err = "2 Invalid username or password.";
+                    $login_err = "Invalid username or password.";
                 }
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
