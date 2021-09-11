@@ -57,7 +57,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             echo "<tr>";
             echo "<td>" . $row['budget_name'] . "</td>";
             echo "<td>" . $row['budget_type'] . "</td>";
-            echo "<td>" . $row['starting_value'] . "</td>";
+            echo "<td>$" . $row['starting_value'] . "</td>";
             echo "<td><a href='add_expense.php?budget_id=".$row['budget_id']."'>Add Expense</a><br></br><a href='delete.php?budget_id=".$row['budget_id']."'>Delete Budget</a><br></br><a href='expenses.php?budget_id=".$row['budget_id']."'>View Expenses</a></td>";
             echo "</tr>";
         }
