@@ -30,7 +30,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <h3>Admin Accounts</h3>
 
     <table border="1" class="table table-striped" style="table-layout: fixed">
-    <tr><th>User ID</th><th>Username</th></tr>
+    <tr><th>User ID</th><th>Username</th><th>Manage Account</th></tr>
+    
     <?php
  
 	$db_host   = '192.168.2.12';
@@ -57,15 +58,47 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             echo "<tr>";
             echo "<td>" . $row['uid'] . "</td>";
             echo "<td>" . $row['username'] . "</td>";
+            echo "<td><a href='delete_account.php?uid=".$row['uid']."'>Delete Account</a></td>";
             echo "</tr>";
         }
     }else{
         echo "There are no admins";
     }
 
+    
+
+
 
 	?>
+    
 
+    </table>
+    <h3>User Accounts</h3>
+    <table border="1" class="table table-striped" style="table-layout: fixed">
+    <tr><th>User ID</th><th>Username</th><th>Manage Account</th></tr>
+    <?php
+    $sql1 = "SELECT username, uid FROM user";
+	$stmt = $pdo->prepare($sql1);
+	$stmt->execute();
+	$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if(!$users.sizeof() == 0){
+
+    
+        foreach($users as $row){
+                echo "<tr>";
+                echo "<td>" . $row['uid'] . "</td>";
+                echo "<td>" . $row['username'] . "</td>";
+                echo "<td><a href='delete_user.php?uid=".$row['uid']."'>Delete Account</a></td>";
+                echo "</tr>";
+            }
+        }else{
+            echo "There are no user accounts";
+        }
+    
+    
+    
+    
+    ?>
     </table>
     <p><a href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a></p>
   </body>
