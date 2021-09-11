@@ -6,7 +6,7 @@
 session_start();
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    header("location: budget.php");
+    header("location: admin_home.php");
     exit;
 }
 
@@ -59,8 +59,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     if($row = $stmt->fetch()){
                         $uid = $row["uid"];
                         $username = $row["username"];
-                        $hashed_password = $row["password"];
-                        if(password_verify($password, $hashed_password)){
+                        //$hashed_password = $row["password"];
+                        if($password = $row["password"]){
                             // Password is correct, so start a new session
                             session_start();
                             
@@ -70,7 +70,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["username"] = $username;                            
                             
                             // Redirect user to welcome page
-                            header("location: budget.php");
+                            header("location: admin_home.php");
                         } else{
                             // Password is not valid, display a generic error message
                             $login_err = "Invalid username or password.";
