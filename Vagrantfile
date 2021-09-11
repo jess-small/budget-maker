@@ -6,18 +6,9 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  # The most common configuration options are documented and commented below.
-  # For a complete reference, please see the online documentation at
-  # https://docs.vagrantup.com.
 
-  # Every Vagrant development environment requires a box. You can search for
-  # boxes at https://vagrantcloud.com/search.
   config.vm.box = "ubuntu/xenial64"
 
-  # Disable automatic box update checking. If you disable this, then
-  # boxes will only be checked for updates when the user runs
-  # `vagrant box outdated`. This is not recommended.
-  # config.vm.box_check_update = false
 
   config.vm.define "webserver" do |webserver|
    webserver.vm.hostname = "webserver"
@@ -29,14 +20,11 @@ Vagrant.configure("2") do |config|
    webserver.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
 
 
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
-  # documentation for more information about their specific syntax and use.
+  #Provision of the webserver using a shell script
    webserver.vm.provision "shell", inline: <<-SHELL
      apt-get update
      apt-get install -y apache2 php libapache2-mod-php php-mysql
-     # Change VM's webserver's configuration to use shared folder.
-      # (Look inside test-website.conf for specifics.)
+     # Changes VM's webserver's configuration to use the www shared folder.
       cp /vagrant/test-website.conf /etc/apache2/sites-available/
       # activate our website configuration ...
       a2ensite test-website
@@ -48,10 +36,9 @@ Vagrant.configure("2") do |config|
    SHELL
 end
 
-config.vm.define "dbserver" do |dbserver|
+
+  config.vm.define "dbserver" do |dbserver|
     dbserver.vm.hostname = "dbserver"
-    # Note that the IP address is different from that of the webserver
-    # above: it is important that no two VMs attempt to use the same
     # IP address on the private_network.
     dbserver.vm.network "private_network", ip: "192.168.2.12"
     dbserver.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
@@ -131,10 +118,9 @@ config.vm.define "dbserver" do |dbserver|
      apt-get update
      apt-get install -y apache2 php libapache2-mod-php php-mysql
      # Change VM's administrative's configuration to use shared folder.
-      # (Look inside test-website.conf for specifics.)
-      cp /vagrant/test-website.conf /etc/apache2/sites-available/
+      cp /vagrant/admin.conf /etc/apache2/sites-available/
       # activate our website configuration ...
-      a2ensite test-website
+      a2ensite admin
       # ... and disable the default website provided with Apache
       a2dissite 000-default
       # Reload the administrative configuration, to pick up our changes
