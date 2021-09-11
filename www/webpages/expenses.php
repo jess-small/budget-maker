@@ -15,37 +15,6 @@ if (isset($_GET["budget_id"])) {
 $b_id = $_SESSION["b_id"];
 
 
-// // Prepare an insert statement
-// $sql2 = "SELECT expense_id, expense_name, amount, b_id FROM expense WHERE b_id = :b_id";
-// $stmt = $pdo->prepare($sql2);
-// $stmt->bindParam(':b_id', $b_id, PDO::PARAM_INT);
-// $stmt->execute();
-// $expenses = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// if(!$expenses.sizeof() == 0){
-//     $dataPoints = array( 
-//     foreach($expenses as $row){
-//     array("label"=>$row['expense_name'], "y"=>$row['amount']),
-//     }
-//     )
-// }else{
-// echo "You have no expenses";
-// }
-
-$dataPoints = array( 
-	array("label"=>"retirement", "y"=>500),
-	array("label"=>"short term", "y"=>200),
-	array("label"=>"long term", "y"=>300),
-)
-
-// $dataArray = array();
-
-// $qry = mysql_query("SELECT expense_name, amount FROM expense");
-
-// while($row = mysql_fetch_array($qry)) {
-//     $dataArray[$row['expense_name']] = $res['amount'];
-// }
-
 
 ?>
  
@@ -60,25 +29,7 @@ $dataPoints = array(
 	.wrapper{max-width: 500px; margin: auto; padding: 50px; display: block;}
     </style>
 
-<script>
-window.onload = function() {
- 
- 
-var chart = new CanvasJS.Chart("chartContainer", {
-	animationEnabled: true,
-	title: {
-		text: "Your Budget Diagram"
-	},
-	data: [{
-		type: "pie",
-		indexLabel: "{label} ('$'{y})",
-		dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
-	}]
-});
-chart.render();
- 
-}
-</script>
+
 
 </head>
 <body>
