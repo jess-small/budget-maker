@@ -1,3 +1,11 @@
+CREATE TABLE administrator
+(
+   username	VARCHAR(15) NOT NULL,
+   uid          INT(9)      NOT NULL PRIMARY KEY AUTO_INCREMENT,
+   password     VARCHAR(255) NOT NULL
+
+);
+
 
 CREATE TABLE user
 (
