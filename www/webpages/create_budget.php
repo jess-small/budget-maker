@@ -29,28 +29,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $name_err = "Budget name can only contain letters, numbers, and underscores.";
     } else{
         $budget_name = trim($_POST["budget_name"]);
-        // Prepare a select statement
-       // $sql = "SELECT budget_id FROM budget WHERE budget_name = :budget_name";
+            $budget_name = trim($_POST["budget_name"]);
 
-        //if($stmt = $pdo->prepare($sql)){
-            // Bind variables to the prepared statement as parameters
-         //   $stmt->bindParam(":budget_name", $param_budget_name, PDO::PARAM_STR);
-
-            // Set parameters
-          //  $param_budget_name = trim($_POST["budget_name"]);
-
-            // Attempt to execute the prepared statement
-           // if($stmt->execute()){
-           //     if($stmt->rowCount() == 1){
-           //         $name_err = "This budget name already exists. Please choose another.";
-           //     } else{
-                    $budget_name = trim($_POST["budget_name"]);
-               // }
-           // } else{
-           //     echo "Oops! Something went wrong. Please try again later.";
-          //  }
-
-            // Close statement
             unset($stmt);
         }
     //}
@@ -147,7 +127,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		<span class="invalid-feedback"><?php echo $type_err; ?></span>
             </div>
             <div class="form-group">
-                <label>Starting Value</label>
+                <label>Starting Value $</label>
                 <input type="text" name="starting_value" class="form-control <?php echo (!empty($starting_value_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $starting_value; ?>">
                 <span class="invalid-feedback"><?php echo $starting_value_err; ?></span>
             </div>
