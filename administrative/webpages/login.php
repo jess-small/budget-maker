@@ -59,8 +59,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     if($row = $stmt->fetch()){
                         $uid = $row["uid"];
                         $username = $row["username"];
-                        //$hashed_password = $row["password"];
-                        if($password = $row["password"]){
+                        $hashed_password = $row["password"];
+                        if(password_verify($password, $hashed_password)){
                             // Password is correct, so start a new session
                             session_start();
                             
