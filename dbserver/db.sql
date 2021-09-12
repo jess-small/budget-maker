@@ -21,10 +21,10 @@ CREATE TABLE budget
    user_id	INT(9)		NOT NULL,
    budget_name  VARCHAR(30)	NOT NULL,
    budget_type  VARCHAR(15),
-   starting_value INT(6)          NOT NULL,
-   constraint fk_budget_uid
+   starting_value INT(6)          NOT NULL
+  /* constraint fk_budget_uid
    foreign key (user_id)
-   	references user(uid)
+   	references user(uid)*/
    
    
 );
@@ -35,11 +35,11 @@ CREATE TABLE expense
    expense_name VARCHAR(20)     NOT NULL,
    description  VARCHAR(20),   
    amount	INT             NOT NULL,           
-   b_id         INT(9)          NOT NULL,
+   b_id         INT(9)          NOT NULL
    
-   constraint fk_expense_budget_id
+   /*constraint fk_expense_budget_id
    foreign key(b_id)
-   	references budget(budget_id)
+   	references budget(budget_id)*/
 );
 
 

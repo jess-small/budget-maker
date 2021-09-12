@@ -54,7 +54,7 @@ $b_id = $_SESSION["b_id"];
 	$user_id = $_SESSION["uid"];
 	
 
-	// Prepare an insert statement
+	// Prepare a select statement
     $sql = "SELECT expense_id, expense_name, description, amount FROM expense WHERE b_id = :b_id";
 	$stmt = $pdo->prepare($sql);
 	$stmt->bindParam(':b_id', $b_id, PDO::PARAM_INT);
