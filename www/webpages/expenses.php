@@ -1,5 +1,5 @@
 <?php
-// Source code for the pie chart format: https://canvasjs.com/php-charts/pie-chart/
+
 // Initialize the session
 session_start();
 
