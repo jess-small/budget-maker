@@ -12,7 +12,7 @@ $pdo = new PDO($pdo_dsn, $db_user, $db_passwd);
 
 if(isset($_GET['uid'])) {
 
-    $uid = $_GET['uid'];
+    $uid = intval($_GET['uid']);
     $sql = "DELETE FROM administrator WHERE uid = :uid";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':uid', $uid, PDO::PARAM_INT);
