@@ -130,7 +130,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Login">
             </div>
-            <p>Need to create another admin account? Please sign in first to create one</p>
         </form>
         <a href="../index.php" class="btn btn-warning">Home</a>
     </div>
