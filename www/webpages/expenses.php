@@ -73,11 +73,6 @@ $b_id = $_SESSION["b_id"];
 	?>
     
     </table>
-    <br>
-    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
-
     <p><a href="budget.php" class="btn btn-warning">Back</a><a href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a></p>
   </body>
 </html>
