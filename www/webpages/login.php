@@ -2,14 +2,13 @@
 <?php
 /* CODE SOURCED FROM https://www.tutorialrepublic.com/php-tutorial/php-mysql-login-system.php */
 
-
 session_start();
-// Check if the user is already logged in, if yes then redirect him to welcome page
+// Check if the user is already logged in, if yes then redirect them to welcome page
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     header("location: budget.php");
     exit;
 }
-
+//connect to the database
 $db_host   = '192.168.2.12';
 $db_name   = 'fvision';
 $db_user   = 'webuser';

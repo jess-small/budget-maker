@@ -1,7 +1,7 @@
 <?php
 
 /* CODE SOURCED FROM https://www.tutorialrepublic.com/php-tutorial/php-mysql-login-system.php */
-
+// connect to the database
 session_start();
 $db_host   = '192.168.2.12';
 $db_name   = 'fvision';
@@ -90,7 +90,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 // Redirect to login page
                 header("location: login.php");
             } else{
-                echo "2 Oops! Something went wrong. Please try again later.";
+                echo "Oops! Something went wrong. Please try again later.";
 		 echo $stmt->error;
             }
 

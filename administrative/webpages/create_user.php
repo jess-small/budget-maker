@@ -3,6 +3,7 @@
 /* CODE SOURCED FROM https://www.tutorialrepublic.com/php-tutorial/php-mysql-login-system.php */
 
 session_start();
+//connect to the database
 $db_host   = '192.168.2.12';
 $db_name   = 'fvision';
 $db_user   = 'webuser';
@@ -83,15 +84,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             
             // Set parameters
             $param_username = $username;
-            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
-            //$param_password = $password;
+            // hash the password
+            $param_password = password_hash($password, PASSWORD_DEFAULT); 
             // Attempt to execute the prepared statement
             if($stmt->execute()){
                 // Redirect to login page
                 header("location: login.php");
             } else{
-                echo "2 Oops! Something went wrong. Please try again later.";
-		 echo $stmt->error;
+                echo "Oops! Something went wrong. Please try again later.";
             }
 
             // Close statement

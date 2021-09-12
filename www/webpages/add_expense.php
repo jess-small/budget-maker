@@ -1,5 +1,8 @@
 <?php
+/* CODE SOURCED FROM https://www.tutorialrepublic.com/php-tutorial/php-mysql-login-system.php MODIFIED TO CREATE EXPENSE RATHER THAN LOGIN TO AN ACCOUNT */
+
 session_start();
+//connect to the database
 $db_host   = '192.168.2.12';
 $db_name   = 'fvision';
 $db_user   = 'webuser';
@@ -26,7 +29,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty(trim($_POST["expense_name"]))){
         $expense_name_err = "Please enter an expense name.";
     } else{
-        $expense_name = trim($_POST["expense_name"]);
+        $expense_name = trim($_POST["expense_n oame"]);
     }
     //checks if description field has input
     if(empty(trim($_POST["description"]))){
@@ -51,15 +54,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     //checks if there are not errors in form, if not statements will execute
     if(empty($expense_name_err) && empty($description_err) && empty($amount_err)){
 
-        //statement to insert the expense from the from into the expense table
+        //prepare an insert statement to insert into expense table
         $sql = "INSERT INTO expense (expense_name, description, amount, b_id) VALUES (:expense_name, :description, :amount, :b_id)";
         $stmt = $pdo->prepare($sql);
+        //bind variables to statement
         $stmt->bindParam(":expense_name", $expense_name, PDO::PARAM_STR);
         $stmt->bindParam(":description", $description, PDO::PARAM_STR);
         $stmt->bindParam(":amount", $amount, PDO::PARAM_INT);
         $stmt->bindParam(":b_id", $b_id, PDO::PARAM_INT);
    
-
+        //if successful redirect to budget homepage
         if($stmt->execute()){
  	        header("location: budget.php");
 	    }else{
@@ -86,18 +90,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             
 
    
-            //statement to update the original value of the budget to the updated value
-            $sql2 = "UPDATE budget SET starting_value=:new_value WHERE budget_id=:b_id";
-            $stmt = $pdo->prepare($sql2);
-
-            $stmt->bindParam(":new_value", $new_value, PDO::PARAM_INT);
-            $stmt->bindParam(":b_id", $b_id, PDO::PARAM_INT);
-            if($stmt->execute()){
-                header("location: budget.php");
-            }else{
-                echo 'error';
-	
-	        }   
+        //statement to update the original value of the budget to the updated value
+        $sql2 = "UPDATE budget SET starting_value=:new_value WHERE budget_id=:b_id";
+        //prepare the update statement
+        $stmt = $pdo->prepare($sql2);
+        //bind parameters 
+        $stmt->bindParam(":new_value", $new_value, PDO::PARAM_INT);
+        $stmt->bindParam(":b_id", $b_id, PDO::PARAM_INT);
+        if($stmt->execute()){
+            header("location: budget.php");
+        }else{
+            echo 'error';	
+	   }   
        
     }
     unset($pdo);

@@ -1,11 +1,11 @@
 <?php
 session_start();
-// Checks if user is logged in
+// Checks if user is logged in, if not redirect them to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
-
+//connect to the database
 $db_host   = '192.168.2.12';
 $db_name   = 'fvision';
 $db_user   = 'webuser';
@@ -14,6 +14,8 @@ $db_passwd = 'insecure_db_pw';
 $pdo_dsn = "mysql:host=$db_host;dbname=$db_name";
 
 $pdo = new PDO($pdo_dsn, $db_user, $db_passwd);
+
+/* CODE SOURCED FROM https://www.tutorialrepublic.com/php-tutorial/php-mysql-login-system.php ADAPTED TO BE FOR A BUDGET RATHER THAN TO LOGIN */
 
 // Define variables and initialize with empty values
 $budget_name = $budget_type = $starting_value = "";
@@ -33,9 +35,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             unset($stmt);
         }
-    //}
 
-     // Validate budget type
+
+     // Ensure user has entered a budget name
     if(empty(trim($_POST["budget_type"]))){
         $type_err = "Please select a budget type.";
     } else{
@@ -51,13 +53,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     } else{
         $starting_value = trim($_POST["starting_value"]);
     }
-
+    
+    //set user id from the session
     $user_id = $_SESSION['uid'];
 
     // Check input errors before inserting in database
     if(empty($name_err) && empty($type_err) && empty($starting_value_err)){
 
-        // Prepare an insert statement
+        // Prepare an insert statement to avoid SQL injection
         $sql = "INSERT INTO budget (user_id, budget_name, budget_type, starting_value) VALUES (:user_id, :budget_name, :budget_type, :starting_value)";
 
         if($stmt = $pdo->prepare($sql)){
@@ -77,8 +80,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 // Redirect to budget home page
                 header("location: budget.php");
             } else{
-                echo "2 Oops! Something went wrong. Please try again later.";
-                 echo $stmt->error;
+                echo "Oops! Something went wrong. Please try again later.";
             }
 
             // Close statement
