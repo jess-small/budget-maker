@@ -22,7 +22,6 @@ CREATE TABLE budget
    budget_name  VARCHAR(30)	NOT NULL,
    budget_type  VARCHAR(15),
    starting_value INT(6)          NOT NULL,
-   remaining    INT(6),
    constraint fk_budget_uid
    foreign key (user_id)
    	references user(uid)
