@@ -4,11 +4,12 @@
 session_start();
 
 
-// Check if the user is logged in, if not then redirect him to login page
+// Check if the user is logged in, if not then redirect then to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
+//set the session ID to the budget ID
 if (isset($_GET["budget_id"])) {
     $_SESSION["b_id"] = $_GET["budget_id"];
 }
@@ -29,8 +30,6 @@ $b_id = $_SESSION["b_id"];
 	.wrapper{max-width: 500px; margin: auto; padding: 50px; display: block;}
     </style>
 
-
-
 </head>
 <body>
     <h1 class="my-5">Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to Budget Maker.</h1>
@@ -42,7 +41,7 @@ $b_id = $_SESSION["b_id"];
 
     
     <?php
- 
+    // connect to the database
 	$db_host   = '192.168.2.12';
 	$db_name   = 'fvision';
 	$db_user   = 'webuser';
@@ -53,15 +52,14 @@ $b_id = $_SESSION["b_id"];
 	$pdo = new PDO($pdo_dsn, $db_user, $db_passwd);
 	$user_id = $_SESSION["uid"];
 	
-
-	// Prepare a select statement
+	// Prepare a select statement to avoid SQL injection
     $sql = "SELECT expense_id, expense_name, description, amount FROM expense WHERE b_id = :b_id";
 	$stmt = $pdo->prepare($sql);
 	$stmt->bindParam(':b_id', $b_id, PDO::PARAM_INT);
 	$stmt->execute();
 	$expenses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
-
+    // loops through the array to fill the table
 	foreach($expenses as $row){
             echo "<tr>";
             echo "<td>" . $row['expense_name'] . "</td>";
