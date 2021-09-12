@@ -10,15 +10,17 @@ $pdo_dsn = "mysql:host=$db_host;dbname=$db_name";
 $pdo = new PDO($pdo_dsn, $db_user, $db_passwd);
 
 
+
 if(isset($_GET['budget_id'])) {
 
     $budget_id = $_GET['budget_id'];
     $sql = "DELETE FROM budget WHERE budget_id = :budget_id";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':budget_id', $budget_id, PDO::PARAM_INT);
-    $stmt->execute(); 
-    header("location: budget.php");
+    $stmt->execute();
+    header("location: budget.php"); 
     $stmt->close();
+    
     	
 }
 ?>
