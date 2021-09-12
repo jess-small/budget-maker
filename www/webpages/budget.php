@@ -3,7 +3,7 @@
 session_start();
 
 
-// Check if the user is logged in, if not then redirect him to login page
+// Check if the user is logged in, if not then redirect then to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
@@ -31,7 +31,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <table border="1" class="table table-striped" style="table-layout: fixed">
     <tr><th>Budget Name</th><th>Budget Type</th><th>Current Value</th><th>Edit Budget</th></tr>
     <?php
- 
+    //connect to the database
 	$db_host   = '192.168.2.12';
 	$db_name   = 'fvision';
 	$db_user   = 'webuser';
@@ -43,31 +43,32 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 	$user_id = $_SESSION["uid"];
 	
 
-	// Prepare an insert statement
+	// Prepare a select statement to avoid SQL injection
     $sql = "SELECT budget_id, budget_name, budget_type, starting_value FROM budget WHERE user_id = :user_id";
 	$stmt = $pdo->prepare($sql);
 	$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 	$stmt->execute();
 	$budgets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
+    //checks if usesr has any budgets made
     if(!$budgets.sizeof() == 0){
-
-    
-	foreach($budgets as $row){
-            echo "<tr>";
-            echo "<td>" . $row['budget_name'] . "</td>";
-            echo "<td>" . $row['budget_type'] . "</td>";
-            echo "<td>$" . $row['starting_value'] . "</td>";
-            echo "<td><a href='add_expense.php?budget_id=".$row['budget_id']."'>Add Expense</a><br></br><a href='delete.php?budget_id=".$row['budget_id']."'>Delete Budget</a><br></br><a href='expenses.php?budget_id=".$row['budget_id']."'>View Expenses</a></td>";
-            echo "</tr>";
-        }
+        //if so display all budgets
+        foreach($budgets as $row){
+                echo "<tr>";
+                echo "<td>" . $row['budget_name'] . "</td>";
+                echo "<td>" . $row['budget_type'] . "</td>";
+                echo "<td>$" . $row['starting_value'] . "</td>";
+                echo "<td><a href='add_expense.php?budget_id=".$row['budget_id']."'>Add Expense</a><br></br><a href='delete.php?budget_id=".$row['budget_id']."'>Delete Budget</a><br></br><a href='expenses.php?budget_id=".$row['budget_id']."'>View Expenses</a></td>";
+                echo "</tr>";
+         
+            }
+            //if not 
     }else{
         echo "You have no budgets";
     }
 
 
 	?>
-
     </table>
     <p><a href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a></p>
   </body>
