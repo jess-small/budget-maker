@@ -1,34 +1,32 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
+# This command configures the three virtual machines we use for this application.
 Vagrant.configure("2") do |config|
 
+  # We use Ubuntu software, so we can specify our box with this command
   config.vm.box = "ubuntu/xenial64"
 
-
+  #This command creates the web server virtual machine. This hosts the users front end.
   config.vm.define "webserver" do |webserver|
    webserver.vm.hostname = "webserver"
- 
+   #Port-forwarding settings
    webserver.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-
+   #private IP address. This allows a channel for virtual machines to communicate with one another.
    webserver.vm.network "private_network", ip: "192.168.2.11"
-
+   #Permissions for Owheo lab computers to access the application
    webserver.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
 
 
-  #Provision of the webserver using a shell script
+  # Enable provisioning of the webserver with a shell script.
    webserver.vm.provision "shell", inline: <<-SHELL
      apt-get update
      apt-get install -y apache2 php libapache2-mod-php php-mysql
      # Changes VM's webserver's configuration to use the www shared folder.
       cp /vagrant/test-website.conf /etc/apache2/sites-available/
-      # activate our website configuration ...
+      # Activate our website configuration
       a2ensite test-website
-      # ... and disable the default website provided with Apache
+      # Disable the default website provided with Apache
       a2dissite 000-default
       # Reload the webserver configuration, to pick up our changes
       service apache2 reload
@@ -36,13 +34,17 @@ Vagrant.configure("2") do |config|
    SHELL
 end
 
-
+  #This command creates the database server virtual machine.
   config.vm.define "dbserver" do |dbserver|
     dbserver.vm.hostname = "dbserver"
+    # Note that the IP address is different from that of the webserver
+    # above: it is important that no two VMs attempt to use the same
     # IP address on the private_network.
     dbserver.vm.network "private_network", ip: "192.168.2.12"
+    #Permissions for Owheo lab computers to access the application
     dbserver.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
     
+    # Enable provisioning the database with a shell script. 
     dbserver.vm.provision "shell", inline: <<-SHELL
       # Update Ubuntu software packages.
       apt-get update
@@ -101,27 +103,26 @@ end
     SHELL
   end
 
+  #This command creates the web server virtual machine. This hosts the administrators front end.
   config.vm.define "administrative" do |administrative|
    administrative.vm.hostname = "administrative"
-
+   #Port-forwarding settings. Note webserver and administrative machines have different host port numbers
    administrative.vm.network "forwarded_port", guest: 80, host: 8081, host_ip: "127.0.0.1"
- 
+   #private IP address.
    administrative.vm.network "private_network", ip: "192.168.2.13"
-
+  #Permissions for Owheo lab computers to access the application
    administrative.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
 
 
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
-  # documentation for more information about their specific syntax and use.
+  # Enable provisioning of the administratice server with a shell script.
    administrative.vm.provision "shell", inline: <<-SHELL
      apt-get update
      apt-get install -y apache2 php libapache2-mod-php php-mysql
      # Change VM's administrative's configuration to use shared folder.
       cp /vagrant/admin.conf /etc/apache2/sites-available/
-      # activate our website configuration ...
+      # Activate our website configuration
       a2ensite admin
-      # ... and disable the default website provided with Apache
+      # Disable the default website provided with Apache
       a2dissite 000-default
       # Reload the administrative configuration, to pick up our changes
       service apache2 reload
@@ -131,5 +132,4 @@ end
 
 end
 
-#  LocalWords:  webserver xenial64
 
