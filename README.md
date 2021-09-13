@@ -37,11 +37,12 @@ From there, you open your command line, change into the directory where the repo
 
 Once you have finished with the application, you can run "vagrant destory" in the command line. This will destroy the virtual machines, and stop them running.
 
-## Test data
-Due to the hashing algorithm we use to store users passwords, test data is not available. 
 
 
-# Demo Video
+
+# Demo video of how to run the system from startup and using the application
 https://user-images.githubusercontent.com/84217552/133026504-ff5c2663-2db1-49e2-bc97-4dfc6d8a269d.mp4
 
 
+### Test data
+Due to the passwords being hashed in our system, no accounts can be made prior to startup of the application as we did not want passwords stored in plain text in the database. Our system is simple and straight forward to use so users should have no issue with making an account.
