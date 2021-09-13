@@ -121,7 +121,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <div class="form-group">
                 <label>Budget Type</label>
 		<select name = "budget_type" id= "type" class="form-control <?php echo (!empty($type_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $budget_type; ?>">
-		  <option value = "Food">Personal</option>
+		  <option value = "Personal">Personal</option>
 		  <option value = "Housing">Housing</option>
 		  <option value = "Bills">Bills</option>
 		  <option value = "Savings">Savings</option>
