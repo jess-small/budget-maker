@@ -50,7 +50,7 @@ $b_id = $_SESSION["b_id"];
 	$pdo_dsn = "mysql:host=$db_host;dbname=$db_name";
 
 	$pdo = new PDO($pdo_dsn, $db_user, $db_passwd);
-	$user_id = $_SESSION["uid"];
+	//$user_id = $_SESSION["uid"];
 	
 	// Prepare a select statement to avoid SQL injection
     $sql = "SELECT expense_id, expense_name, description, amount FROM expense WHERE b_id = :b_id";
