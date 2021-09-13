@@ -40,7 +40,7 @@ Once you have finished with the application, you can run "vagrant destory" in th
 
 
 
-# Demo video of how to run the system from startup and using the application
+## Demo video of how to run the system from startup and using the application
 https://user-images.githubusercontent.com/84217552/133026504-ff5c2663-2db1-49e2-bc97-4dfc6d8a269d.mp4
 
 
