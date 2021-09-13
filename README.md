@@ -1,5 +1,5 @@
 # Budget Maker
-The Budget Maker application is a simple user interface for creating budgets. The project runs on 3 virtual machines and uses Vagrant to provision them and to install any necessary dependencies. 
+The Budget Maker application is a simple user interface for creating budgets. The application runs on 3 virtual machines and uses Vagrant to provision them and to install any necessary dependencies. 
 
 ## Installation Instructions
 Vagrant and Virtual Box must be first installed to use this application. 
