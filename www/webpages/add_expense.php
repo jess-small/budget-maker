@@ -29,7 +29,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty(trim($_POST["expense_name"]))){
         $expense_name_err = "Please enter an expense name.";
     } else{
-        $expense_name = trim($_POST["expense_n oame"]);
+        $expense_name = trim($_POST["expense_name"]);
     }
     //checks if description field has input
     if(empty(trim($_POST["description"]))){
