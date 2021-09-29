@@ -1,11 +1,44 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+class Hash
+  def slice(*keep_keys)
+    h = {}
+    keep_keys.each { |key| h[key] = fetch(key) if has_key?(key) }
+    h
+  end unless Hash.method_defined?(:slice)
+  def except(*less_keys)
+    slice(*keys - less_keys)
+  end unless Hash.method_defined?(:except)
+end
+
 # This command configures the three virtual machines we use for this application.
 Vagrant.configure("2") do |config|
 
   # We use Ubuntu software, so we can specify our box with this command
   config.vm.box = "ubuntu/xenial64"
+
+  config.vm.provider :aws do |aws, override|
+
+    aws.region = "us-east-1"
+
+    override.nfs.functional = false
+    override.vm.allowed_synced_folder_types = :rsync
+
+    aws.keypair_name = "budget-maker-kp"
+    override.ssh.private_key_path = "~/.ssh/budget-maker-kp.pem"
+
+    aws.instance_type = "t2.micro"
+
+    aws.security_groups = ["sg-0496c3e0487402a45"]
+
+    aws.availability_zone = "us-east-1a"
+    aws.subnet_id = "subnet-11124a77"
+
+    aws.ami = "ami-089b5711e63812c2a"
+
+    override.ssh.username = "ubuntu"
+  end
 
   #This command creates the web server virtual machine. This hosts the users front end.
   config.vm.define "webserver" do |webserver|
