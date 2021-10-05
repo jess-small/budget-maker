@@ -25,8 +25,8 @@ Vagrant.configure("2") do |config|
     override.nfs.functional = false
     override.vm.allowed_synced_folder_types = :rsync
 
-    aws.keypair_name = "budget-maker-kp"
-    override.ssh.private_key_path = "~/.ssh/budget-maker-kp.pem"
+    aws.keypair_name = "cosc349-lab9-2021"
+    override.ssh.private_key_path = "~/.ssh/cosc349-lab9-2021.pem"
 
     aws.instance_type = "t2.micro"
 
