@@ -1,4 +1,3 @@
-
 <?php
 /* CODE SOURCED FROM https://www.tutorialrepublic.com/php-tutorial/php-mysql-login-system.php */
 
@@ -8,15 +7,19 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     header("location: budget.php");
     exit;
 }
-//connect to the database
-$db_host   = '192.168.2.12';
-$db_name   = 'fvision';
-$db_user   = 'webuser';
-$db_passwd = 'insecure_db_pw';
+/* CODE SOURCED FROM https://www.tutorialrepublic.com/php-tutorial/php-mysql-login-system.php */
+// connect to the database
+session_start();
+$db_host   = 'budget-maker-db.cn792cjf8ocy.us-east-1.rds.amazonaws.com';
+$db_name   = 'budget-maker';
+$db_user   = 'admin';
+$db_passwd = 'password';
 
-$pdo_dsn = "mysql:host=$db_host;dbname=$db_name";
+$pdo_dsn = "mysql:host=$db_host;port=3306;dbname=$db_name";
 
 $pdo = new PDO($pdo_dsn, $db_user, $db_passwd);
+
+ 
 
 // Define variables and initialize with empty values
 $username = $password = "";

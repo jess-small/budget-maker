@@ -4,9 +4,9 @@
 // connect to the database
 session_start();
 $db_host   = 'budget-maker-db.cn792cjf8ocy.us-east-1.rds.amazonaws.com';
-$db_name   = 'budget-maker-db';
+$db_name   = 'budget-maker';
 $db_user   = 'admin';
-$db_passwd = '349-assign2';
+$db_passwd = 'password';
 
 $pdo_dsn = "mysql:host=$db_host;dbname=$db_name";
 
