@@ -15,35 +15,37 @@ end
 # This command configures the three virtual machines we use for this application.
 Vagrant.configure("2") do |config|
 
-  # We use Ubuntu software, so we can specify our box with this command
+  # Have to use dummy as the box for AWS
   config.vm.box = "dummy"
 
   config.vm.provider :aws do |aws, override|
 
+    #Sets the aws region
     aws.region = "us-east-1"
 
     override.nfs.functional = false
     override.vm.allowed_synced_folder_types = :rsync
 
-   # aws.keypair_name = "AMIwwwbudgetmaker-kp"
-    #override.ssh.private_key_path = "~/.ssh/AMIwwwbudgetmaker-kp.pem"
-
+  
+    #Name of key pair created for project
     aws.keypair_name = "cosc349-lab9-2021"
 
+    #Location where keypair is stored
     override.ssh.private_key_path = "~/.ssh/cosc349-lab9-2021.pem"
 
+    #Instance type of EC2 to create
     aws.instance_type = "t2.micro"
 
-    #aws.security_groups = ["sg-0425661daa4415f87"]
-
+    #Security group that EC2 instances use
     aws.security_groups = ["sg-05c5b5de371d701a3"]
 
+    #Availability zone of EC2 instances
     aws.availability_zone = "us-east-1a"
-    #aws.subnet_id = "subnet-eae20aa6"
-
+ 
+    #Subnet ID for EC2 instances
     aws.subnet_id = "subnet-11124a77"
 
-    #aws.ami = "ami-089b5711e63812c2a"
+    #AMI used for EC2 instances
     aws.ami = "ami-09e67e426f25ce0d7"
 
     override.ssh.username = "ubuntu"
