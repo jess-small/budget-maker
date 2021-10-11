@@ -31,7 +31,7 @@ https://linuxize.com/post/how-to-install-vagrant-on-ubuntu-18-04/
 ### Microsoft Installation
 To install VirtualBox
 Head to: <br>
-https://www.virtualbox.org/wiki/Downloads
+https://www.virtualbox.org/wiki/Downloads <br>
 
 To install Vagrant
 Head to: <br>
@@ -41,14 +41,14 @@ https://www.vagrantup.com/downloads
 In a terminal window run these commands:
 
 ### OSX/Linux Instructions
-vagrant plugin install --plugin-version 1.5.11 nokogiri
-vagrant plugin install --plugin-version 1.0.1 fog-ovirt
-vagrant plugin install --plugin-version 0.2.0 dry-inflector
+vagrant plugin install --plugin-version 1.5.11 nokogiri <br>
+vagrant plugin install --plugin-version 1.0.1 fog-ovirt <br>
+vagrant plugin install --plugin-version 0.2.0 dry-inflector<br>
 vagrant plugin install vagrant-aws
 
 ### Windows Instructions
 In a command line window run these commands:
-vagrant plugin install --plugin-version 1.0.1 fog-ovirt
+vagrant plugin install --plugin-version 1.0.1 fog-ovirt <br>
 vagrant plugin install vagrant-aws
 
 ## Add a Vagrant dummy box
@@ -66,9 +66,9 @@ You will then need to create a key pair and download it into the same location w
 Your credentials for your AWS are needed to start the virtual machines. Instructions on where to find these can be found here https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html.
 From here, cd into the .aws file from the root directory of the project. Then open up the credentials file in a text editor and copy and paste the credentials of your account. After this, the environment variables need to be set in the terminal. 
 
-export AWS_ACCESS_KEY_ID= ***YOUR VARIABLES****
-export AWS_SECRET_ACCESS_KEY= ***YOUR VARIABLES****
-export AWS_SESSION_TOKEN= ***YOUR VARIABLES****
+export AWS_ACCESS_KEY_ID= "YOUR VARIABLES" <br>
+export AWS_SECRET_ACCESS_KEY= "YOUR VARIABLES" <br>
+export AWS_SESSION_TOKEN= "YOUR VARIABLES" <br>
 
 
 From there, open a terminal window, change into the directory where the repository was cloned, and run the commands "vagrant up --provider=aws". Once this command is complete, go to your AWS account console and then to the EC2 section. You should see the instances have been created.
