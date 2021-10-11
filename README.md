@@ -9,6 +9,10 @@ Head to http://ec2-100-27-33-102.compute-1.amazonaws.com
 ### Web Server
 Head to http://ec2-44-193-10-91.compute-1.amazonaws.com
 
+
+## Video demo of how to use application
+https://user-images.githubusercontent.com/84217552/136725019-56e563c2-2143-4b0a-b4cc-09f8b7be3c48.mp4
+
 # To run virtual machines from own AWS account
 
 ## Installation Instructions
@@ -47,6 +51,7 @@ vagrant plugin install --plugin-version 0.2.0 dry-inflector<br>
 vagrant plugin install vagrant-aws
 
 ### Windows Instructions
+
 In a command line window run these commands:
 vagrant plugin install --plugin-version 1.0.1 fog-ovirt <br>
 vagrant plugin install vagrant-aws
@@ -82,7 +87,6 @@ Once you have finished with the application, you can run "vagrant halt" to stop 
 
 
 
-## Demo video of how to run the system from startup and using the application
-https://user-images.githubusercontent.com/84217552/133026504-ff5c2663-2db1-49e2-bc97-4dfc6d8a269d.mp4
+
 
 
